@@ -28,6 +28,7 @@ Microsoft365DSC/
 │       ├── M365DSCReverse.psm1       # Config extraction / "reverse DSC" engine
 │       ├── M365DSCPermissions.psm1   # Permission list and validation helpers
 │       ├── M365DSCLogEngine.psm1     # Error logging and event log entries
+│       ├── M365DSCErrorHandler.psm1  # Error handling utilities
 │       ├── M365DSCReport.psm1        # HTML/delta report generation
 │       ├── M365DSCDRGUtil.psm1       # Drift/export string utilities
 │       ├── M365DSCDocGenerator.psm1  # Wiki/docs generator
@@ -92,7 +93,7 @@ Resources are named `MSFT_<WorkloadPrefix><ResourceName>`. The supported workloa
 | `TEAMS` / `Tea` | Microsoft Teams |
 | `VIVA` / `Viv` | Viva / Viva Connections |
 
-The export workloads available in `Export-M365DSCConfiguration -Workloads` are: `AAD`, `ADO`, `AZURE`, `COMMERCE`, `DEFENDER`, `EXO`, `FABRIC`, `INTUNE`, `O365`, `OD`, `PLANNER`, `PP`, `SC`, `SENTINEL`, `SH`, `SPO`, `TEAMS`, `VIVA`.
+The export workloads available in `Export-M365DSCConfiguration -Workloads` are: `AAD`, `ADO`, `AZURE`, `COMMERCE`, `DEFENDER`, `EXO`, `FABRIC`, `INTUNE`, `O365`, `OD`, `PLANNER`, `PP`, `SC`, `SENTINEL`, `SH`, `SPO`, `TEAMS`.
 
 ---
 
@@ -176,7 +177,7 @@ New-M365DSCLogEntry -Message 'Error retrieving data:' `
     -Credential $Credential
 ```
 
-**CRITICAL — no hardcoded Graph endpoints**: Never put `https://graph.microsoft.com` directly in resource `.psm1` files. Always use `Get-MSCloudLoginConnectionProfile -Workload MicrosoftGraph).ResourceUrl` to build the URL:
+**CRITICAL — no hardcoded Graph endpoints**: Never put `https://graph.microsoft.com` directly in resource `.psm1` files. Always use `(Get-MSCloudLoginConnectionProfile -Workload MicrosoftGraph).ResourceUrl` to build the URL:
 
 ```powershell
 $Uri = (Get-MSCloudLoginConnectionProfile -Workload MicrosoftGraph).ResourceUrl + "beta/..."
